@@ -2,31 +2,25 @@ package main;
 
 import abstractCloud.CloudProvider;
 import aws.AmazonWebServices;
-import com.google.common.collect.ImmutableSet;
-import com.google.inject.Module;
 import gce.GoogleComputeEngine;
-import org.jclouds.ContextBuilder;
-import org.jclouds.compute.ComputeService;
-import org.jclouds.compute.ComputeServiceContext;
-import org.jclouds.compute.RunNodesException;
 import org.jclouds.compute.domain.ComputeMetadata;
-import org.jclouds.compute.domain.OsFamily;
-import org.jclouds.compute.domain.Template;
-import org.jclouds.logging.log4j.config.Log4JLoggingModule;
-import org.jclouds.sshj.config.SshjSshClientModule;
 import profitbricks.ProfitBricks;
 
 import java.util.Set;
 
 public class Main {
 
+    private static Accounts accounts;
+
     public static void main(String[] args) {
+
+        accounts = new Accounts();
 
     }
 
     private static void aws() {
-        String awsUser = "AKIAINIS46C4ASJUWM5A";
-        String awsPassword = "ISVi0464ryQXCkeCubqLf7RGzQ023a0zK663/ERy";
+        String awsUser = accounts.getValue("awsUser");
+        String awsPassword = accounts.getValue("awsPassword");
         CloudProvider aws = new AmazonWebServices(awsUser, awsPassword);
 
         listNodes(aws);
@@ -38,8 +32,8 @@ public class Main {
     }
 
     private static void profitBricks() {
-        String profitBricksUser = "julian.sauer@adesso.de";
-        String profitBricksPassword = "ProfitBricksPassword";
+        String profitBricksUser = accounts.getValue("profitBricksUser");
+        String profitBricksPassword = accounts.getValue("profitBricksPassword");
         CloudProvider profitBricks = new ProfitBricks(profitBricksUser, profitBricksPassword);
 
         listNodes(profitBricks);
@@ -51,8 +45,8 @@ public class Main {
     }
 
     private static void gce() {
-        String gceUser = "";
-        String gcePassword = "";
+        String gceUser = accounts.getValue("gceUser");
+        String gcePassword = accounts.getValue("gcePassword");
         CloudProvider gce = new GoogleComputeEngine(gceUser, gcePassword);
 
         listNodes(gce);
