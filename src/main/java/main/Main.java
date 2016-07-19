@@ -2,6 +2,7 @@ package main;
 
 import abstractCloud.CloudProvider;
 import aws.AmazonWebServices;
+import digitalOcean.DigitalOcean;
 import gce.GoogleComputeEngine;
 import org.jclouds.compute.domain.ComputeMetadata;
 import profitbricks.ProfitBricks;
@@ -16,6 +17,8 @@ public class Main {
 
         accounts = new Accounts();
 
+        digitalOcean();
+
     }
 
     private static void aws() {
@@ -23,10 +26,7 @@ public class Main {
         String awsPassword = accounts.getValue("awsPassword");
         CloudProvider aws = new AmazonWebServices(awsUser, awsPassword);
 
-        listNodes(aws);
-        aws.createNode();
-        listNodes(aws);
-        aws.destroyAllNodes();
+        doTestOperations(aws);
 
         aws.getComputeServiceContext().close();
     }
@@ -36,10 +36,7 @@ public class Main {
         String profitBricksPassword = accounts.getValue("profitBricksPassword");
         CloudProvider profitBricks = new ProfitBricks(profitBricksUser, profitBricksPassword);
 
-        listNodes(profitBricks);
-        profitBricks.createNode();
-        listNodes(profitBricks);
-        profitBricks.destroyAllNodes();
+        doTestOperations(profitBricks);
 
         profitBricks.getComputeServiceContext().close();
     }
@@ -49,11 +46,19 @@ public class Main {
         String gcePassword = accounts.getValue("gcePassword");
         CloudProvider gce = new GoogleComputeEngine(gceUser, gcePassword);
 
-        listNodes(gce);
-        gce.createNode();
-        listNodes(gce);
+        doTestOperations(gce);
 
         gce.getComputeServiceContext().close();
+    }
+
+    private static void digitalOcean() {
+        String doUser = accounts.getValue("doUser");
+        String doPassword = accounts.getValue("doPassword");
+        CloudProvider digitalOcean = new DigitalOcean(doUser, doPassword);
+
+        doTestOperations(digitalOcean);
+
+        digitalOcean.getComputeServiceContext().close();
     }
 
     /**
@@ -65,14 +70,31 @@ public class Main {
         Set<? extends ComputeMetadata> nodes = cloud.getCloudInterface().listNodes();
         System.out.println(cloud.getClass().getName() + ":");
         if (nodes.size() == 0)
-            System.out.println("    No nodes found.");
+            System.out.println("    No nodes found.\n");
 
         for (ComputeMetadata node : nodes) {
             System.out.println("    Name        " + node.getName());
             System.out.println("    Type:       " + node.getType());
-            System.out.println("    Location    " + node.getLocation());
-            System.out.println();
+            System.out.println("    Location    " + node.getLocation() + "\n");
         }
+    }
+
+    /**
+     * Creates and removes nodes for testing
+     *
+     * @param cloud Cloud Provider
+     */
+    private static void doTestOperations(CloudProvider cloud) {
+        listNodes(cloud);
+        System.out.print("Adding a node...");
+        cloud.createNode();
+        System.out.println("done.\n");
+        listNodes(cloud);
+
+        System.out.print("Removing all nodes...");
+        cloud.destroyAllNodes();
+        System.out.println("done.\n");
+        listNodes(cloud);
     }
 
 }

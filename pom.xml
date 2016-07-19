@@ -56,6 +56,13 @@
             <version>${jclouds.version}</version>
         </dependency>
 
+        <!-- DigitalOcean -->
+        <dependency>
+            <groupId>org.apache.jclouds.labs</groupId>
+            <artifactId>digitalocean2</artifactId>
+            <version>${jclouds.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
