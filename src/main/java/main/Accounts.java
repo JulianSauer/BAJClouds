@@ -12,7 +12,7 @@ public class Accounts {
     public Accounts() {
 
         try {
-            File file = new File("accounts.properties");
+            File file = new File("src/main/resources/accounts.properties");
             FileInputStream fis = new FileInputStream(file);
             properties = new Properties();
             properties.load(fis);
