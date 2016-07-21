@@ -1,8 +1,8 @@
-package gce;
+package clouds;
 
-import abstractCloud.CloudProvider;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
+import main.Accounts;
 import org.jclouds.ContextBuilder;
 import org.jclouds.compute.ComputeServiceContext;
 import org.jclouds.compute.domain.OsFamily;
@@ -12,8 +12,8 @@ import org.jclouds.sshj.config.SshjSshClientModule;
 
 public class GoogleComputeEngine extends CloudProvider {
 
-    public GoogleComputeEngine(String user, String password) {
-        super(user, password);
+    public GoogleComputeEngine(Accounts accounts) {
+        super(accounts.getValue("gceUser"), accounts.getValue("gcePassword"));
     }
 
     @Override

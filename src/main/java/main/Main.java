@@ -1,11 +1,7 @@
 package main;
 
-import abstractCloud.CloudProvider;
-import aws.AmazonWebServices;
-import digitalOcean.DigitalOcean;
-import gce.GoogleComputeEngine;
+import clouds.*;
 import org.jclouds.compute.domain.ComputeMetadata;
-import profitbricks.ProfitBricks;
 
 import java.util.Set;
 
@@ -17,48 +13,35 @@ public class Main {
 
         accounts = new Accounts();
 
+        aws();
         digitalOcean();
+        gce();
+        profitBricks();
 
     }
 
     private static void aws() {
-        String awsUser = accounts.getValue("awsUser");
-        String awsPassword = accounts.getValue("awsPassword");
-        CloudProvider aws = new AmazonWebServices(awsUser, awsPassword);
-
+        CloudProvider aws = new AmazonWebServices(accounts);
         doTestOperations(aws);
-
         aws.getComputeServiceContext().close();
     }
 
-    private static void profitBricks() {
-        String profitBricksUser = accounts.getValue("profitBricksUser");
-        String profitBricksPassword = accounts.getValue("profitBricksPassword");
-        CloudProvider profitBricks = new ProfitBricks(profitBricksUser, profitBricksPassword);
-
-        doTestOperations(profitBricks);
-
-        profitBricks.getComputeServiceContext().close();
+    private static void digitalOcean() {
+        CloudProvider digitalOcean = new DigitalOcean(accounts);
+        doTestOperations(digitalOcean);
+        digitalOcean.getComputeServiceContext().close();
     }
 
     private static void gce() {
-        String gceUser = accounts.getValue("gceUser");
-        String gcePassword = accounts.getValue("gcePassword");
-        CloudProvider gce = new GoogleComputeEngine(gceUser, gcePassword);
-
+        CloudProvider gce = new GoogleComputeEngine(accounts);
         doTestOperations(gce);
-
         gce.getComputeServiceContext().close();
     }
 
-    private static void digitalOcean() {
-        String doUser = accounts.getValue("doUser");
-        String doPassword = accounts.getValue("doPassword");
-        CloudProvider digitalOcean = new DigitalOcean(doUser, doPassword);
-
-        doTestOperations(digitalOcean);
-
-        digitalOcean.getComputeServiceContext().close();
+    private static void profitBricks() {
+        CloudProvider profitBricks = new ProfitBricks(accounts);
+        doTestOperations(profitBricks);
+        profitBricks.getComputeServiceContext().close();
     }
 
     /**

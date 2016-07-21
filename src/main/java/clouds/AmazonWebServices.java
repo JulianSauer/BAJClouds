@@ -1,6 +1,6 @@
-package aws;
+package clouds;
 
-import abstractCloud.CloudProvider;
+import main.Accounts;
 import org.jclouds.aws.ec2.compute.AWSEC2TemplateOptions;
 import org.jclouds.compute.ComputeServiceContext;
 import org.jclouds.compute.domain.OsFamily;
@@ -9,8 +9,9 @@ import org.jclouds.ec2.domain.InstanceType;
 
 public class AmazonWebServices extends CloudProvider {
 
-    public AmazonWebServices(String user, String password) {
-        super(user, password);
+    public AmazonWebServices(Accounts accounts) {
+        super(accounts.getValue("awsUser"),
+                accounts.getValue("awsPassword"));
     }
 
     public ComputeServiceContext getComputeServiceContext() {

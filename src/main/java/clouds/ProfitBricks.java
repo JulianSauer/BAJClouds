@@ -1,13 +1,13 @@
-package profitbricks;
+package clouds;
 
-import abstractCloud.CloudProvider;
+import main.Accounts;
 import org.jclouds.compute.ComputeServiceContext;
 import org.jclouds.compute.domain.Template;
 
 public class ProfitBricks extends CloudProvider {
 
-    public ProfitBricks(String user, String password) {
-        super(user, password);
+    public ProfitBricks(Accounts accounts) {
+        super(accounts.getValue("profitBricksUser"), accounts.getValue("profitBricksPassword"));
     }
 
     @Override

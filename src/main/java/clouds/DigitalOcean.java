@@ -1,14 +1,14 @@
-package digitalOcean;
+package clouds;
 
-import abstractCloud.CloudProvider;
+import main.Accounts;
 import org.jclouds.compute.ComputeServiceContext;
 import org.jclouds.compute.domain.OsFamily;
 import org.jclouds.compute.domain.Template;
 
 public class DigitalOcean extends CloudProvider {
 
-    public DigitalOcean(String user, String password) {
-        super(user, password);
+    public DigitalOcean(Accounts accounts) {
+        super(accounts.getValue("doUser"), accounts.getValue("doPassword"));
     }
 
     @Override
