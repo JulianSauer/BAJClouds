@@ -24,8 +24,7 @@ public class ProfitBricks extends CloudProvider {
                         .overrideLoginPassword("123456789")
                         .runScript("mkdir /home/logs" +
                                 "&& apt-get update" +
-                                "&& apt-get install maven -y" +
-                                "&& apt-get install openjdk-7-jdk -y > /home/logs/install.txt" +
+                                "&& apt-get install maven openjdk-7-jdk -y > /home/logs/install.txt" +
                                 "&& git clone https://github.com/ewolff/user-registration.git /home/app/ > /home/logs/git.txt" +
                                 "&& cd /home/app/user-registration-application/ > /home/logs/cd.txt" +
                                 "&& mvn spring-boot:run > /home/logs/mvn.txt")

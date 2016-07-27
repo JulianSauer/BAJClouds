@@ -1,11 +1,15 @@
 package clouds;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.inject.Module;
 import org.jclouds.ContextBuilder;
 import org.jclouds.compute.ComputeService;
 import org.jclouds.compute.ComputeServiceContext;
 import org.jclouds.compute.RunNodesException;
 import org.jclouds.compute.domain.ComputeMetadata;
 import org.jclouds.compute.domain.Template;
+import org.jclouds.logging.log4j.config.Log4JLoggingModule;
+import org.jclouds.sshj.config.SshjSshClientModule;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -29,6 +33,9 @@ public abstract class CloudProvider {
         if (context == null)
             context = ContextBuilder.newBuilder(cloud)
                     .credentials(user, password)
+                    .modules(ImmutableSet.<Module>of(
+                            new SshjSshClientModule(),
+                            new Log4JLoggingModule()))
                     .buildView(ComputeServiceContext.class);
 
         cloudInterface = context.getComputeService();

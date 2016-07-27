@@ -19,8 +19,19 @@ public class AmazonWebServices extends CloudProvider {
     }
 
     public void createNode() {
-        Template template = cloudInterface.templateBuilder().hardwareId(InstanceType.T2_MICRO).osFamily(OsFamily.AMZN_LINUX).build();
-        template.getOptions().as(AWSEC2TemplateOptions.class).securityGroupIds("default");
+        Template template = cloudInterface.templateBuilder()
+                .hardwareId(InstanceType.T2_MICRO)
+                .options(cloudInterface.templateOptions()
+                        .overrideLoginUser("root")
+                        .overrideLoginPassword("123456789")
+                        .runScript("mkdir /home/logs" +
+                                "&& apt-get update" +
+                                "&& apt-get install maven git openjdk-7-jdk -y > /home/logs/install.txt" +
+                                "&& git clone https://github.com/ewolff/user-registration.git /home/app/ > /home/logs/git.txt" +
+                                "&& cd /home/app/user-registration-application/ > /home/logs/cd.txt" +
+                                "&& mvn spring-boot:run > /home/logs/mvn.txt")
+                )
+                .build();
         createNode(template);
     }
 
