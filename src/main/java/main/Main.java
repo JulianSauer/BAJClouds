@@ -68,16 +68,18 @@ public class Main {
      * @param cloud Cloud Provider
      */
     private static void doTestOperations(CloudProvider cloud) {
+        System.out.print("Removing all nodes...");
+        cloud.destroyAllNodes();
+        System.out.println("done.\n");
+        listNodes(cloud);
+
         listNodes(cloud);
         System.out.print("Adding a node...");
         cloud.createNode();
         System.out.println("done.\n");
         listNodes(cloud);
 
-        System.out.print("Removing all nodes...");
-        cloud.destroyAllNodes();
-        System.out.println("done.\n");
-        listNodes(cloud);
+
     }
 
 }
