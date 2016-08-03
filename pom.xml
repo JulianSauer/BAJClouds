@@ -24,7 +24,7 @@
         <!-- Log4JLoggingModule -->
         <dependency>
             <groupId>org.apache.jclouds.driver</groupId>
-            <artifactId>jclouds-log4j</artifactId>
+            <artifactId>jclouds-slf4j</artifactId>
             <version>${jclouds.version}</version>
         </dependency>
 
@@ -34,13 +34,6 @@
             <artifactId>jclouds-sshj</artifactId>
             <version>${jclouds.version}</version>
         </dependency>
-
-        <!-- AWS EC2 -->
-        <!--<dependency>
-            <groupId>org.jclouds.provider</groupId>
-            <artifactId>aws-ec2</artifactId>
-            <version>1.6.0</version>
-        </dependency>-->
 
         <!-- ProfitBricks -->
         <dependency>
