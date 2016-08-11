@@ -1,5 +1,6 @@
 package clouds;
 
+import org.jclouds.compute.domain.OsFamily;
 import org.jclouds.compute.domain.Template;
 
 public class DigitalOcean extends CloudProvider {
@@ -12,8 +13,9 @@ public class DigitalOcean extends CloudProvider {
     public Template getTemplate() {
         return cloudInterface.templateBuilder()
                 .smallest()
+                .osFamily(OsFamily.UBUNTU)
                 .options(cloudInterface.templateOptions()
-                        .runScript(initScript.replace("openjdk-7-jdk", "openjdk-8-jdk"))
+                        .runScript(initScript)
                 )
                 .build();
     }

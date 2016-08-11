@@ -11,11 +11,11 @@ public class ProfitBricks extends CloudProvider {
     @Override
     public Template getTemplate() {
         return cloudInterface.templateBuilder()
-                .imageNameMatches("Ubuntu")
+                .imageNameMatches("Ubuntu-14.04")
                 .options(cloudInterface.templateOptions()
                         .overrideLoginUser("root")
                         .overrideLoginPassword("123456789")
-                        .runScript(initScript.replace("openjdk-7-jdk", "openjdk-8-jdk"))
+                        .runScript(initScript)
                 )
                 .build();
     }
