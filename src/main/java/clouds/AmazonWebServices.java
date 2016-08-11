@@ -1,7 +1,6 @@
 package clouds;
 
 import org.jclouds.aws.ec2.compute.AWSEC2TemplateOptions;
-import org.jclouds.compute.domain.OsFamily;
 import org.jclouds.compute.domain.Template;
 import org.jclouds.ec2.domain.InstanceType;
 
@@ -15,7 +14,7 @@ public class AmazonWebServices extends CloudProvider {
     public Template getTemplate() {
         Template template = cloudInterface.templateBuilder()
                 .hardwareId(InstanceType.T2_MICRO)
-                .osFamily(OsFamily.UBUNTU)
+                .imageNameMatches("14.04")
                 .options(cloudInterface.templateOptions()
                         .runScript(initScript)
                         .overrideLoginPrivateKey("") // RSA key as String
