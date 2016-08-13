@@ -11,6 +11,7 @@ public class GoogleComputeEngine extends CloudProvider {
     @Override
     protected Template getTemplate() {
         return cloudInterface.templateBuilder()
+                .imageNameMatches("ubuntu-1404")
                 .options(cloudInterface.templateOptions()
                         .overrideLoginUser("root")
                         .overrideLoginPassword("123456789")
