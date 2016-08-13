@@ -9,7 +9,7 @@ public class GoogleComputeEngine extends CloudProvider {
     }
 
     @Override
-    public Template getTemplate() {
+    protected Template getTemplate() {
         return cloudInterface.templateBuilder()
                 .options(cloudInterface.templateOptions()
                         .overrideLoginUser("root")
@@ -18,4 +18,5 @@ public class GoogleComputeEngine extends CloudProvider {
                 )
                 .build();
     }
+
 }

@@ -5,6 +5,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * Helper class for reading account data from files.
+ * <p>
+ * Requires the file BAJclouds/src/main/resources/accounts.properties
+ * with key value pairs in the format:
+ * key=value
+ */
 public class Accounts {
 
     private Properties properties;

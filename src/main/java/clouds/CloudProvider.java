@@ -19,10 +19,7 @@ import java.util.Set;
 
 public abstract class CloudProvider {
 
-    protected String user;
-    protected String password;
-
-    protected ComputeServiceContext context;
+    private ComputeServiceContext context;
     protected ComputeService cloudInterface;
 
     protected final String initScript = "mkdir /home/logs" +
@@ -33,74 +30,20 @@ public abstract class CloudProvider {
 
     public CloudProvider(String userKey, String passwordKey, String provider) {
         Accounts accounts = new Accounts();
-        this.user = accounts.getValue(userKey);
-        this.password = accounts.getValue(passwordKey);
-        getComputeServiceContext(provider);
-    }
+        String user = accounts.getValue(userKey);
+        String password = accounts.getValue(passwordKey);
 
-    /**
-     * Establishes a connection to a cloud.
-     *
-     * @param provider Name of the cloud provider.
-     */
-    protected void getComputeServiceContext(String provider) {
-        if (context == null) {
-            context = ContextBuilder.newBuilder(provider)
-                    .credentials(user, password)
-                    .modules(ImmutableSet.<Module>of(
-                            new SshjSshClientModule(),
-                            new SLF4JLoggingModule()))
-                    .buildView(ComputeServiceContext.class);
-
-            cloudInterface = context.getComputeService();
-        }
+        context = ContextBuilder.newBuilder(provider)
+                .credentials(user, password)
+                .modules(ImmutableSet.<Module>of(
+                        new SshjSshClientModule(),
+                        new SLF4JLoggingModule()))
+                .buildView(ComputeServiceContext.class);
+        cloudInterface = context.getComputeService();
     }
 
     public void closeContext() {
         context.close();
-    }
-
-    /**
-     * Deploys a new instance.
-     */
-    protected void createNode() {
-        Template template = getTemplate();
-        Date date = new Date();
-        DateFormat format = new SimpleDateFormat("ddMMyyyy-HHmmss");
-        try {
-            cloudInterface.createNodesInGroup("jclouds-" + format.format(date), 1, template);
-        } catch (RunNodesException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Creates a template for deploying a new instance.
-     *
-     * @return Instance template
-     */
-    protected abstract Template getTemplate();
-
-    public void destroyAllNodes() {
-        for (ComputeMetadata node : cloudInterface.listNodes()) {
-            cloudInterface.destroyNode(node.getId());
-        }
-    }
-
-    /**
-     * Lists all nodes of this cloud.
-     */
-    public void listNodes() {
-        Set<? extends ComputeMetadata> nodes = cloudInterface.listNodes();
-        System.out.println(this.getClass().getName() + ":");
-        if (nodes.size() == 0)
-            System.out.println("    No nodes found.\n");
-
-        for (ComputeMetadata node : nodes) {
-            System.out.println("    Name        " + node.getName());
-            System.out.println("    Type:       " + node.getType());
-            System.out.println("    Location    " + node.getLocation() + "\n");
-        }
     }
 
     /**
@@ -111,12 +54,47 @@ public abstract class CloudProvider {
         destroyAllNodes();
         System.out.println("done.\n");
         listNodes();
-
-        listNodes();
         System.out.print("Adding a node...");
         createNode();
         System.out.println("done.\n");
         listNodes();
+    }
+
+    /**
+     * Defines options for a new instance.
+     *
+     * @return Template for instances
+     */
+    protected abstract Template getTemplate();
+
+    private void createNode() {
+        Template template = getTemplate();
+        Date date = new Date();
+        DateFormat format = new SimpleDateFormat("ddMMyyyy-HHmmss");
+        try {
+            cloudInterface.createNodesInGroup("jclouds-" + format.format(date), 1, template);
+        } catch (RunNodesException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void destroyAllNodes() {
+        for (ComputeMetadata node : cloudInterface.listNodes()) {
+            cloudInterface.destroyNode(node.getId());
+        }
+    }
+
+    private void listNodes() {
+        Set<? extends ComputeMetadata> nodes = cloudInterface.listNodes();
+        System.out.println(this.getClass().getName() + ":");
+        if (nodes.size() == 0)
+            System.out.println("    No nodes found.\n");
+
+        for (ComputeMetadata node : nodes) {
+            System.out.println("    Name        " + node.getName());
+            System.out.println("    Type:       " + node.getType());
+            System.out.println("    Location    " + node.getLocation() + "\n");
+        }
     }
 
 }

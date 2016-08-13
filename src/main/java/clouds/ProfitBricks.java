@@ -9,7 +9,7 @@ public class ProfitBricks extends CloudProvider {
     }
 
     @Override
-    public Template getTemplate() {
+    protected Template getTemplate() {
         return cloudInterface.templateBuilder()
                 .imageNameMatches("Ubuntu-14.04")
                 .options(cloudInterface.templateOptions()

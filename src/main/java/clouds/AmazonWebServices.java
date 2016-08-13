@@ -11,7 +11,7 @@ public class AmazonWebServices extends CloudProvider {
     }
 
     @Override
-    public Template getTemplate() {
+    protected Template getTemplate() {
         Template template = cloudInterface.templateBuilder()
                 .hardwareId(InstanceType.T2_MICRO)
                 .imageNameMatches("14.04")

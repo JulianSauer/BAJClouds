@@ -10,7 +10,7 @@ public class DigitalOcean extends CloudProvider {
     }
 
     @Override
-    public Template getTemplate() {
+    protected Template getTemplate() {
         return cloudInterface.templateBuilder()
                 .smallest()
                 .osFamily(OsFamily.UBUNTU)
