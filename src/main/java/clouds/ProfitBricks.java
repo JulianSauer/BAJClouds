@@ -10,9 +10,9 @@ public class ProfitBricks extends CloudProvider {
 
     @Override
     protected Template getTemplate() {
-        return cloudInterface.templateBuilder()
+        return connection.templateBuilder()
                 .imageNameMatches("Ubuntu-14.04")
-                .options(cloudInterface.templateOptions()
+                .options(connection.templateOptions()
                         .overrideLoginUser("root")
                         .overrideLoginPassword("123456789")
                         .runScript(initScript)

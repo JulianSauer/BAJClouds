@@ -11,10 +11,10 @@ public class DigitalOcean extends CloudProvider {
 
     @Override
     protected Template getTemplate() {
-        return cloudInterface.templateBuilder()
+        return connection.templateBuilder()
                 .smallest()
                 .osFamily(OsFamily.UBUNTU)
-                .options(cloudInterface.templateOptions()
+                .options(connection.templateOptions()
                         .runScript(initScript)
                 )
                 .build();

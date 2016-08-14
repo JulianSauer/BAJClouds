@@ -12,10 +12,10 @@ public class AmazonWebServices extends CloudProvider {
 
     @Override
     protected Template getTemplate() {
-        Template template = cloudInterface.templateBuilder()
+        Template template = connection.templateBuilder()
                 .hardwareId(InstanceType.T2_MICRO)
                 .imageNameMatches("14.04")
-                .options(cloudInterface.templateOptions()
+                .options(connection.templateOptions()
                         .runScript(initScript)
                         .overrideLoginPrivateKey("") // RSA key as String
                 )

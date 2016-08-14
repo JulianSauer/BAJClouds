@@ -19,8 +19,8 @@ import java.util.Set;
 
 public abstract class CloudProvider {
 
-    private ComputeServiceContext context;
-    protected ComputeService cloudInterface;
+    private ComputeServiceContext driver;
+    protected ComputeService connection;
 
     protected final String initScript = "mkdir /home/logs" +
             "&& apt-get update" +
@@ -33,17 +33,17 @@ public abstract class CloudProvider {
         String user = accounts.getValue(userKey);
         String password = accounts.getValue(passwordKey);
 
-        context = ContextBuilder.newBuilder(provider)
+        driver = ContextBuilder.newBuilder(provider)
                 .credentials(user, password)
                 .modules(ImmutableSet.<Module>of(
                         new SshjSshClientModule(),
                         new SLF4JLoggingModule()))
                 .buildView(ComputeServiceContext.class);
-        cloudInterface = context.getComputeService();
+        connection = driver.getComputeService();
     }
 
     public void closeContext() {
-        context.close();
+        driver.close();
     }
 
     /**
@@ -72,20 +72,20 @@ public abstract class CloudProvider {
         Date date = new Date();
         DateFormat format = new SimpleDateFormat("ddMMyyyy-HHmmss");
         try {
-            cloudInterface.createNodesInGroup("jclouds-" + format.format(date), 1, template);
+            connection.createNodesInGroup("jclouds-" + format.format(date), 1, template);
         } catch (RunNodesException e) {
             e.printStackTrace();
         }
     }
 
     private void destroyAllNodes() {
-        for (ComputeMetadata node : cloudInterface.listNodes()) {
-            cloudInterface.destroyNode(node.getId());
+        for (ComputeMetadata node : connection.listNodes()) {
+            connection.destroyNode(node.getId());
         }
     }
 
     private void listNodes() {
-        Set<? extends ComputeMetadata> nodes = cloudInterface.listNodes();
+        Set<? extends ComputeMetadata> nodes = connection.listNodes();
         System.out.println(this.getClass().getName() + ":");
         if (nodes.size() == 0)
             System.out.println("    No nodes found.\n");
