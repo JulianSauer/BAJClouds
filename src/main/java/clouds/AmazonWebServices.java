@@ -14,7 +14,7 @@ public class AmazonWebServices extends CloudProvider {
     protected Template getTemplate() {
         Template template = connection.templateBuilder()
                 .hardwareId(InstanceType.T2_MICRO)
-                .imageNameMatches("14.04")
+                .imageNameMatches("ubuntu-trusty-14.04")
                 .options(connection.templateOptions()
                         .overrideLoginPrivateKey("") // RSA key as String
                         .as(AWSEC2TemplateOptions.class).keyPair("id_rsa") // Name of key pair
