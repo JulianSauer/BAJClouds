@@ -16,11 +16,10 @@ public class AmazonWebServices extends CloudProvider {
                 .hardwareId(InstanceType.T2_MICRO)
                 .imageNameMatches("14.04")
                 .options(connection.templateOptions()
-                        .runScript(initScript)
                         .overrideLoginPrivateKey("") // RSA key as String
+                        .as(AWSEC2TemplateOptions.class).keyPair("id_rsa") // Name of key pair
                 )
                 .build();
-        template.getOptions().as(AWSEC2TemplateOptions.class).keyPair("id_rsa"); // Name of key pair
         return template;
     }
 

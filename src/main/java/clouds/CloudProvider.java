@@ -69,6 +69,7 @@ public abstract class CloudProvider {
 
     private void createNode() {
         Template template = getTemplate();
+        template.getOptions().runScript(initScript);
         Date date = new Date();
         DateFormat format = new SimpleDateFormat("ddMMyyyy-HHmmss");
         try {

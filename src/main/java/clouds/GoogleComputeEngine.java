@@ -15,7 +15,6 @@ public class GoogleComputeEngine extends CloudProvider {
                 .options(connection.templateOptions()
                         .overrideLoginUser("root")
                         .overrideLoginPassword("123456789")
-                        .runScript(initScript)
                 )
                 .build();
     }

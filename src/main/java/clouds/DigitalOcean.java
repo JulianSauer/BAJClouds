@@ -14,9 +14,6 @@ public class DigitalOcean extends CloudProvider {
         return connection.templateBuilder()
                 .smallest()
                 .osFamily(OsFamily.UBUNTU)
-                .options(connection.templateOptions()
-                        .runScript(initScript)
-                )
                 .build();
     }
 
