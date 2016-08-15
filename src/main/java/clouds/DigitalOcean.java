@@ -13,7 +13,7 @@ public class DigitalOcean extends CloudProvider {
     protected Template getTemplate() {
         return connection.templateBuilder()
                 .smallest()
-                .osFamily(OsFamily.UBUNTU)
+                .imageNameMatches("14.04")
                 .build();
     }
 
