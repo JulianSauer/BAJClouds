@@ -70,10 +70,8 @@ public abstract class CloudProvider {
     private void createNode() {
         Template template = getTemplate();
         template.getOptions().runScript(initScript);
-        Date date = new Date();
-        DateFormat format = new SimpleDateFormat("ddMMyyyy-HHmmss");
         try {
-            connection.createNodesInGroup("jclouds-" + format.format(date), 1, template);
+            connection.createNodesInGroup(getNodeName(), 1, template);
         } catch (RunNodesException e) {
             e.printStackTrace();
         }
@@ -83,6 +81,12 @@ public abstract class CloudProvider {
         for (ComputeMetadata node : connection.listNodes()) {
             connection.destroyNode(node.getId());
         }
+    }
+
+    private String getNodeName() {
+        DateFormat format = new SimpleDateFormat("ddMMyyyy-HHmmss");
+        Date date = new Date();
+        return "jclouds-" + format.format(date);
     }
 
     private void listNodes() {
