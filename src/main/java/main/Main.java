@@ -13,7 +13,7 @@ public class Main {
 
     private static void doTestOperationsFor(CloudProvider cloud) {
         cloud.doTestOperations();
-        cloud.closeContext();
+        cloud.closeConnection();
     }
 
 }

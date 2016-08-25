@@ -19,14 +19,14 @@ import java.util.Set;
 
 public abstract class CloudProvider {
 
-    private ComputeServiceContext driver;
-    protected ComputeService connection;
-
-    protected final String initScript = "mkdir /home/logs" +
+    private final String initScript = "mkdir /home/logs" +
             "&& apt-get update" +
             "&& apt-get install maven git openjdk-7-jdk -y" +
             "&& git clone https://github.com/ewolff/user-registration.git /home/app/" +
             "&& mvn -f /home/app/user-registration-application/pom.xml spring-boot:run &";
+
+    private ComputeServiceContext driver;
+    protected ComputeService connection;
 
     public CloudProvider(String userKey, String passwordKey, String provider) {
         Accounts accounts = new Accounts();
@@ -42,7 +42,7 @@ public abstract class CloudProvider {
         connection = driver.getComputeService();
     }
 
-    public void closeContext() {
+    public void closeConnection() {
         driver.close();
     }
 
